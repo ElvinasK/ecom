@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        <!-- Header-->
+        <header style="background-image: url('/static/assets/camobackground.jfif'); background-size: cover; background-position: center; height: 30vh; display: flex; justify-content: center; align-items: center;">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Užsakymas apdorojamas</h1>
+                </div>
+            </div>
+        </header>
+        <br/>
+        <div class="container">
+            <div class="row">
+
+                    <div class="col-md-6 offset-md-3">
+          <div class="card">
+          <div class="card-header">
+            Užsakymo suvestine
+          </div>
+          <div class="card-body">
+            {% for product in cart_products %}
+                {{ product.name }}:
+                    {% if product.is_sale %}
+                        ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                {% endif %}
+
+                <br/>
+                <small>Kiekis:
+                {% for key, value in quantities.items %}
+                    {% if key == product.id|slugify %}
+                        {{ value }}
+                    {% endif %}
+                {% endfor %}</small>
+                <br/><br/>
+
+            {% endfor %}
+            iš viso:  ${{ totals }}
+            <br/><br/>
+            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Atnaujinti</a>
+          </div>
+        </div>
+<br/><br/>
+<div class="card">
+  <div class="card-header">
+    Pristatymo Informacija
+  </div>
+  <div class="card-body">
+
+    Name: {{ shipping_info.full_name }}<br/>
+    Phone Number: {{ shipping_info.phone }}<br/>
+    Email: {{ shipping_info.shipping_email }}<br/>
+    Address 1: {{ shipping_info.address1 }}<br/>
+    Address 2: {{ shipping_info.address2 }}<br/>
+    City: {{ shipping_info.city }}<br/>
+    Zipcode: {{ shipping_info.zipcode }}<br/>
+    Country: {{ shipping_info.country }}<br/>
+    <br/>
+    <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Atnaujinti</a>
+
+  </div>
+</div>
+<br/><br/>
+
+
+<br/><br/>
+
+
+<div class="card">
+  <div class="card-header">
+    Atsiskaitymo Informacija
+  </div>
+  <div class="card-body">
+      <form method="POST" action="{% url 'process_order' %}">
+      {% csrf_token %}
+    {{ billing_form.as_p }}
+  </div>
+</div>
+<br/>
+
+
+
+<button type="submit" class="btn btn-secondary">
+  Moketi
+</button>
+
+</form>
+
+<br/><br/>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

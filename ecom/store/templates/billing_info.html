@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Mokėjimo Informacija</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Įveskite Mokėjimo Informaciją</p>
+                </div>
+            </div>
+        </header>
+        <br/>
+        <div class="container">
+            <div class="row">
+
+                    <div class="col-md-6 offset-md-3">
+          <div class="card">
+          <div class="card-header">
+            Užsakymo suvestinė
+          </div>
+          <div class="card-body">
+            {% for product in cart_products %}
+                {{ product.name }}:
+                    {% if product.is_sale %}
+                        ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                {% endif %}
+
+                <br/>
+                <small>Kiekis:
+                {% for key, value in quantities.items %}
+                    {% if key == product.id|slugify %}
+                        {{ value }}
+                    {% endif %}
+                {% endfor %}</small>
+                <br/><br/>
+
+            {% endfor %}
+            Iš Viso:  ${{ totals }}
+            <br/><br/>
+            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Atnaujinti</a>
+          </div>
+        </div>
+<br/><br/>
+<div class="card">
+  <div class="card-header">
+    Pristatymo Informacija
+  </div>
+  <div class="card-body">
+
+    Vardas Pavardė: {{ shipping_info.full_name }}<br/>
+    Telefono Numeris: {{ shipping_info.phone }}<br/>
+    Elektroninis Paštas: {{ shipping_info.shipping_email }}<br/>
+    Gatvė, namo nr: {{ shipping_info.address1 }}<br/>
+    Butas: {{ shipping_info.address2 }}<br/>
+    Miestas: {{ shipping_info.city }}<br/>
+    Pašto Kodas: {{ shipping_info.zipcode }}<br/>
+    Šalis: {{ shipping_info.country }}<br/>
+    <br/>
+    <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Atnaujinti</a>
+
+  </div>
+</div>
+<br/><br/>
+
+
+<br/><br/>
+
+
+<div class="card">
+  <div class="card-header">
+    Atsiskaitymo Informacija
+  </div>
+  <div class="card-body">
+      <form method="POST" action="{% url 'process_order' %}">
+      {% csrf_token %}
+    {{ billing_form.as_p }}
+  </div>
+</div>
+<br/>
+
+
+
+<button type="submit" class="btn btn-success">
+  Mokėti
+</button>
+
+</form>
+
+<br/><br/>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}

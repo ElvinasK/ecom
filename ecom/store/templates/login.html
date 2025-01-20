@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Header-->
+        <header style="background-image: url('/static/assets/camobackground.jfif'); background-size: cover; background-position: center; height: 30vh; display: flex; justify-content: center; align-items: center;">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Prisijungti</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Prisijunkite prie savo paskyros</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+          <div class="row">
+            <center>
+              <div class="col-8">
+
+                <br/><br/>
+
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+  <div class="mb-3">
+
+    <input type="text" class="form-control" name="username" placeholder="Įveskite vartotojo varda">
+
+  </div>
+  <div class="mb-3">
+
+    <input type="password" class="form-control" name="password" placeholder="Įveskite slaptažodį">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Prisijungti</button>
+</form>
+
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
+              </div>
+            </center>
+          </div>
+        </div>
+
+
+
+
+{% endblock %}

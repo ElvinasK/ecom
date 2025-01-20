@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        <!-- Header-->
+        <header style="background-image: url('/static/assets/camobackground.jfif'); background-size: cover; background-position: center; height: 30vh; display: flex; justify-content: center; align-items: center;"">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Atsiskaitymas</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Peržiūrėti užsakymą</p>
+                </div>
+            </div>
+        </header>
+        <br/>
+        <div class="container">
+            <div class="row">
+
+                    <div class="col-md-6 offset-md-3">
+          <div class="card">
+          <div class="card-header">
+            Užsakymo suvestinė
+          </div>
+          <div class="card-body">
+            {% for product in cart_products %}
+                {{ product.name }}:
+                    {% if product.is_sale %}
+                        ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                {% endif %}
+
+                <br/>
+                <small>Kiekis:
+                {% for key, value in quantities.items %}
+                    {% if key == product.id|slugify %}
+                        {{ value }}
+                    {% endif %}
+                {% endfor %}</small>
+                <br/><br/>
+
+            {% endfor %}
+            Iš Viso:  ${{ totals }}
+            <br/><br/>
+            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Pakeisti užsakymą</a>
+          </div>
+        </div>
+<br/><br/>
+<div class="card">
+  <div class="card-header">
+    Pristatymo Informacija
+  </div>
+  <div class="card-body">
+      <form method="POST" action="{% url 'billing_info' %}">
+        {% csrf_token %}
+    {{ form.as_p }}
+
+  </div>
+</div>
+<br/>
+
+<button type="submit" class="btn btn-primary">
+        Tęsti Užsakymą
+</button>
+                        <form/>
+
+<br/><br/>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
